@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- 声明 XML 版本和编码为 UTF-8 -->
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"> <!-- 声明使用 MyBatis Generator DTD 规范 -->
+<!-- MyBatis Generator 配置的根元素 -->
+<generatorConfiguration>
+    <!-- 上下文定义，包含数据库连接、实体类生成、SQL 映射文件、Mapper 接口和表策略配置 -->
+    <context id="MyBatis3Simple" targetRuntime="MyBatis3"> <!-- 定义上下文，id 是 MyBatis 生成代码的上下文标识 -->
+        <!-- JDBC 驱动类、数据库连接 URL、用户名和密码 -->
+        <jdbcConnection
+                driverClass="com.mysql.cj.jdbc.Driver"
+                connectionURL="jdbc:mysql://123.56.223.66:3306/mycloud"
+                userId="root"
+                password="850966Wym@"
+        />
+
+        <!-- 配置生成 Java 实体类的包路径、目标路径以及其他属性 -->
+        <javaModelGenerator
+                targetPackage="org.example.user.entity"
+                targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 配置生成 SQL 映射文件的包路径、资源路径 -->
+        <sqlMapGenerator
+                targetPackage="mapper"
+                targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 配置生成 Mapper 接口的包路径、目标路径以及 XML 映射风格 -->
+        <javaClientGenerator
+                type="XMLMAPPER"
+                targetPackage="org.example.user.mapper"
+                targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 配置数据库表信息及生成策略，主键生成策略为 MySQL 自增 -->
+        <table tableName="cloud_user"
+               domainObjectName="User"
+               enableCountByExample="true"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="true"
+               selectByPrimaryKeyQueryId="true">
+            <generatedKey column="id"
+                          sqlStatement="MySql"
+                          identity="true"/>
+        </table>
+
+    </context>
+
+</generatorConfiguration>

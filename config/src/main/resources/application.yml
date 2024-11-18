@@ -1,0 +1,21 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://e.coding.net/sanman/springcloudcode/cloudconfig.git   # Git 仓库 URL（或其他存储配置）
+      eureka:
+        client:
+          serviceUrl:
+            defaultZone: http://localhost:8761/eureka/  # Eureka 服务器地址
+          instance:
+            leaseRenewalIntervalInSeconds: 30  # 续约间隔时间
+            leaseExpirationDurationInSeconds: 90  # 过期时间
+      label: master
+logging:
+  level:
+    org.springframework.cloud: DEBUG  # 设置为 DEBUG 或 INFO

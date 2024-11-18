@@ -1,0 +1,96 @@
+server:
+  port: 8081
+  #  port: 8443
+  #  ssl:
+  #    key-store: classpath:keystore.p12
+  #    key-store-password: 123456
+  #    key-store-type: PKCS12
+  #    key-alias: myalias
+  servlet:
+    session:
+      timeout: 2s
+    context-path: /userService
+spring:
+  application:
+    name: USERSERVICE
+  profiles:
+    active: local
+
+  #  cloud:
+  ##    discovery:
+  ##      client:
+  ##        simple:
+  ##          instances:
+  ##            USERSERVICE:
+  ##              uri: http://localhost:8886
+  #
+  #
+  #    config:
+  #      label: master
+  # 修改swagger的路径匹配配置，使其兼容新版的SpringBoot
+
+  #  mvc:
+  #    pathmatch:
+  #      matching-strategy: ant_path_matcher
+
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #rewriteBatchedStatements=true 对大批量操作优化,会把多条sql合并为一条
+    url: jdbc:mysql://${mycloud.db.host}:3306/mycloud?useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+    username: root
+    password: ${mycloud.db.pwd}
+  redis:
+    host: 123.56.223.66
+    port: 6379
+    password: 123456abc
+#  config:
+#    import: "optional:configserver:http://localhost:8082"
+
+#mybatis:
+#  mapper-locations: classpath*:mapper/*.xml
+#  type-aliases-package: org.example.user.entity.po.User
+
+mybatis-plus:
+  type-aliases-package: org.example.user.entity.po
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+
+eureka:
+  instance:
+    #    hostname: localhost  # 主机名
+    #    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
+    leaseRenewalIntervalInSeconds: 30  # 续约间隔时间
+    leaseExpirationDurationInSeconds: 90  # 过期时间
+  client:
+    register-with-eureka: true  # false不注册自己
+    fetch-registry: true  # false不从Eureka 获取服务列表
+    service-url:
+      defaultZone: http://${mycloud.eureka.host}:${mycloud.eureka.port}/eureka/  # Eureka 服务器地址
+    enabled: false
+
+knife4j:
+  enable: true
+  openapi:
+    description: 用户项目接口文档描述
+    title: 用户项目接口文档
+    email: 13716759140@163.com
+    concat: 阿满
+    url: www.baidu.com
+    version: v1.0.1
+    group:
+      default:
+        group-name: default-group
+        api-rule: package
+        api-rule-resources:
+          - org.example.user.controller

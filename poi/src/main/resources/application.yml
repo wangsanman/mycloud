@@ -1,0 +1,18 @@
+server:
+  port: 8083
+knife4j:
+  enable: true
+  openapi:
+    description: Excel文档接口文档描述
+    title: Excel文档项目接口文档
+    email: 13716759140@163.com
+    concat: 阿满
+    url: www.baidu.com
+    version: v1.0.1
+
+    group:
+      default:
+        group-name: default-group
+        api-rule: package
+        api-rule-resources:
+          - org.example.poi.controller
