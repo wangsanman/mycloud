@@ -4,8 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.user.IgnoreToken;
+import org.example.user.config.IgnoreToken;
 import org.example.user.entity.dto.PageDto;
 import org.example.user.entity.dto.UserDto;
 import org.example.user.entity.dto.UserQuery;
@@ -15,13 +16,13 @@ import org.example.user.service.UserService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @RequestMapping("/users")
 @RestController
 @Slf4j
 @Api(tags = {"用户接口"})
+@RequiredArgsConstructor
 public class UserController {
 //    @SneakyThrows
 //    public static void main(String[] args) {
@@ -87,7 +88,7 @@ public class UserController {
 //    }
 //
 //
-//    public static void a(Pair<?> pair) {
+//    public static void custom.env(Pair<?> pair) {
 //        System.out.println(pair.getFirst());
 ////        System.out.println(first);
 //    }
@@ -99,12 +100,16 @@ public class UserController {
 //        }
 //    }
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private RedisTemplate redisTemplate;
+    private final RedisTemplate redisTemplate;
 
+    @PostMapping("/login")
+    public String login(UserDto userDto) {
+        return userService.login(userDto);
+
+
+    }
 
     @PostMapping
     @ApiOperation(value = "添加用户", notes = "添加一个用户")
@@ -132,15 +137,15 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation("根据id查询用户")
     @IgnoreToken
-    public UserVo selectById(@ApiParam(value = "用户id") @PathVariable Integer id) {
+    public UserVo selectById(@ApiParam(value = "用户id") @PathVariable Long id) {
         User user = userService.getById(id);
         return BeanUtil.copyProperties(user, UserVo.class);
     }
 
-    @GetMapping
+    @GetMapping("/ids/{ids}")
     @ApiOperation("根据ids查询用户集合")
     @IgnoreToken
-    public List<UserVo> selectByIds(@ApiParam(value = "用户id") @RequestParam("用户id集合") List<Integer> ids) {
+    public List<UserVo> selectByIds(@ApiParam(value = "用户id") @PathVariable List<Long> ids) {
         List<User> users = userService.listByIds(ids);
         List<UserVo> userVos = BeanUtil.copyToList(users, UserVo.class);
         return userVos;

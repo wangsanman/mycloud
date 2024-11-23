@@ -3,6 +3,7 @@ package org.example.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.user.entity.dto.PageDto;
+import org.example.user.entity.dto.UserDto;
 import org.example.user.entity.dto.UserQuery;
 import org.example.user.entity.po.User;
 import org.example.user.entity.vo.UserVo;
@@ -20,4 +21,6 @@ public interface UserService extends IService<User> {
     List<UserVo> queryUsersAndAddressByIds(List<Long> ids);
 
     PageDto<UserVo> queryUsersByPage(UserQuery userQuery);
+
+    String login(UserDto userDto);
 }

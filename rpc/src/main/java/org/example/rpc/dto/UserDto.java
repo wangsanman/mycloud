@@ -1,4 +1,4 @@
-package org.example.user.entity.dto;
+package org.example.rpc.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

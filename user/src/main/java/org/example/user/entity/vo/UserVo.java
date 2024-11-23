@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.example.user.entity.enums.UserEnum;
 import org.example.user.entity.po.Address;
-import org.example.user.entity.po.UserInfo;
+import org.example.user.entity.dto.UserInfo;
 
 import java.time.LocalDateTime;
 import java.util.List;

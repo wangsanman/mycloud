@@ -3,10 +3,13 @@ package org.example.user.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
+import org.example.user.config.JwtUtil;
 import org.example.user.entity.dto.PageDto;
+import org.example.user.entity.dto.UserDto;
 import org.example.user.entity.dto.UserQuery;
 import org.example.user.entity.enums.UserEnum;
 import org.example.user.entity.po.Address;
@@ -25,6 +28,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     public void deductMoney(Long id, Integer money) {
@@ -100,5 +105,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .le(userQuery.getMaxBalance() != null, User::getBalance, userQuery.getMaxBalance()).page(page);
 
         return PageDto.pageToDtoByLambda(page, p -> BeanUtil.copyProperties(p, UserVo.class));
+    }
+
+    @Override
+    public String login(UserDto userDto) {
+        User one = lambdaQuery().eq(User::getName, userDto.getName()).one();
+        if (one == null){
+            throw new RuntimeException("用户名错误");
+        }
+        if (one.getStatus() == UserEnum.FREEZE){
+            throw new RuntimeException("账户已被冻结");
+        }
+        if (!one.getPassword().equals(userDto.getPassword())){
+            throw new RuntimeException("用户名或密码错误");
+        }
+
+        return jwtUtil.generateToken(one.getId().toString());
     }
 }

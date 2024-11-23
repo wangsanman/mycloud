@@ -1,4 +1,4 @@
-package org.example.user.entity.po;
+package org.example.rpc.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

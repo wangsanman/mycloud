@@ -1,28 +1,83 @@
 package org.example.user;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.user.config.JwtUtil;
 import org.example.user.entity.po.User;
 import org.example.user.mapper.UserMapper;
 import org.example.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest
 @Slf4j
+//@RequiredArgsConstructor
 class UserApplicationTests {
     @Autowired
     private UserService userService;
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private RestTemplate restTemplate;
+
+    /**
+     * 测试 mybatis 非空不修改
+     */
+    @Test
+    void contextLoads() {
+        User user = new User();
+        user.setId(1L);
+        user.setAge(1);
+        user.setName("");
+        userService.updateById(user);
+        CollUtil.join(new ArrayList<>(),",");
+        Map map = new HashMap();
+        map.put("ids","1,2,3,4,5,6,7,8,9,10");
+
+        ResponseEntity<List<User>> exchange = restTemplate.exchange(
+                "http://localhost:8081/userService/users/ids/{ids}",
+
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<User>>() {
+                },
+                map
+        );
+
+        if (exchange.getStatusCode().is2xxSuccessful()) {
+            System.out.println(exchange.getStatusCodeValue());
+        }
+
+        exchange.getBody().forEach(System.out::println);
+
+    }
+
+    @Test
+    void tokenTest() {
+        String s = jwtUtil.generateToken("abcd312345");
+        log.info("token: {}", s);
+        jwtUtil.verifyToken(s);
+
+        String userId = jwtUtil.getUserId(s);
+        log.info("userId: {}", userId);
+
+
+    }
 
 
     @Test

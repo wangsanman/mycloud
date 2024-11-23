@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.example.user.entity.dto.UserInfo;
 import org.example.user.entity.enums.UserEnum;
 
 import java.time.LocalDateTime;

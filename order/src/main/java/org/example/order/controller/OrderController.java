@@ -1,55 +1,51 @@
 package org.example.order.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URLDecoder;
 
+import cn.hutool.core.bean.BeanUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
+import org.example.order.entity.Order;
+import org.example.order.entity.vo.OrderUserVo;
+import org.example.order.service.IOrderService;
+import org.example.rpc.client.UserApi;
+import org.example.rpc.dto.UserDto;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * <p>
+ * 订单表，存储用户订单的核心信息 前端控制器
+ * </p>
+ *
+ * @author man
+ * @since 2024-11-22
+ */
+@RestController
+@RequestMapping("/orders")
+@Api(tags = {"订单相关接口"})
+@RequiredArgsConstructor
 public class OrderController {
-    // 是否关闭Server
-    private static boolean shutdown = false;
+    private final IOrderService orderService;
+    private final UserApi userApi;
 
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(8080, 1, InetAddress.getByName("127.0.0.1"));
+    @GetMapping("/orderAndUser/{id}")
+    @ApiOperation("查询订单及用户")
+    public OrderUserVo getOrderAndUser(@ApiParam("订单id") @PathVariable Integer id){
+        Order order = orderService.getById(id);
+        UserDto userDto = userApi.get(order.getUserId());
 
-        // 循环等待一个Request请求
-        while (!shutdown) {
-            Socket socket = null;
-            InputStream input = null;
-            OutputStream output = null;
-            try {
-                // 创建socket
-                socket = serverSocket.accept();
-                input = socket.getInputStream();
-                output = socket.getOutputStream();
-                byte[] buffer = new byte[2048];
+        OrderUserVo orderUserVo = BeanUtil.copyProperties(order, OrderUserVo.class);
+        BeanUtil.copyProperties(userDto,orderUserVo,"id","status");
+        orderUserVo.setUserStatus(userDto.getStatus());
 
-                input.read(buffer);
-
-                String s = new String(buffer, "UTF-8");
-//                StringBuffer stringBuffer = new StringBuffer(2048);
-//                for (byte b : buffer) {
-//                    stringBuffer.append((char)b);
-//                }
-
-                int i = s.indexOf("\r\n");
-                String substring = s.substring(0, i + 2);
-                String decode = URLDecoder.decode(substring, "UTF-8");
-                System.out.println("打印\n" + s);
-                // 关闭socket
-                socket.close();
-
-                // 如果接受的是关闭请求，则设置关闭监听request的标志
-//                shutdown = request.getUri().equals("/SHUTDOWN");
-//
-            } catch (Exception e) {
-                e.printStackTrace();
-                continue;
-            }
-        }
-
+        return orderUserVo;
     }
+
+
+
 }

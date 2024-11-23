@@ -1,4 +1,4 @@
-package org.example.user;
+package org.example.user.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

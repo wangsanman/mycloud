@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @ApiModel("条件查询d参数")
 public class UserQuery extends PageQuery {
-    @ApiModelProperty("姓名")
+    @ApiModelProperty
     private String name;
     @ApiModelProperty("状态")
     private Integer status;
