@@ -77,6 +77,7 @@ eureka:
       defaultZone: http://${mycloud.eureka.host}:${mycloud.eureka.port}/eureka/  # Eureka 服务器地址
     enabled: false
 
+#swagger文档配置
 knife4j:
   enable: true
   openapi:
@@ -92,3 +93,8 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - org.example.order.controller
+
+#开启连接池
+feign:
+  okhttp:
+    enabled: true
