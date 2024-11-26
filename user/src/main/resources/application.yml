@@ -18,23 +18,6 @@ spring:
   cloud:
     nacos:
       server-addr: 123.56.223.66:8848
-  #  cloud:
-  ##    discovery:
-  ##      client:
-  ##        simple:
-  ##          instances:
-  ##            USERSERVICE:
-  ##              uri: http://localhost:8886
-  #
-  #
-  #    config:
-  #      label: master
-  # 修改swagger的路径匹配配置，使其兼容新版的SpringBoot
-
-  #  mvc:
-  #    pathmatch:
-  #      matching-strategy: ant_path_matcher
-
 
   servlet:
     multipart:
