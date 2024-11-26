@@ -2,20 +2,20 @@ server:
   port: 8080
 spring:
   application:
-    name: gatewayService
+    name: gateway-service
   cloud:
     nacos:
       server-addr: 123.56.223.66:8848
     gateway:
       routes:
-        - id: user # 路由 ID
-          #          uri: http://example.org  # 目标服务的 URI
-          uri: lb://user-service  #匹配请求路径后,访问该服务
-          predicates:
-            - Path=/userService/**  # 匹配请求路径
-        #          filters:
-        #            - StripPrefix=1  # 去掉请求路径中的第一个前缀
-        - id: order # 路由 ID
+#        - id: user #用户服务 # 路由 ID
+#          #          uri: http://example.org  # 目标服务的 URI
+#          uri: lb://user-service  #匹配请求路径后,访问该服务
+#          predicates:
+#            - Path=/userService/**  # 匹配请求路径
+#        #          filters:
+#        #            - StripPrefix=1  # 去掉请求路径中的第一个前缀
+        - id: order  #订单服务 # 路由 ID
           #          uri: http://example.org  # 目标服务的 URI
           uri: lb://order-service
           predicates:
@@ -23,4 +23,20 @@ spring:
 logging:
   level:
     org.example.gateway: debug
+
+#knife4j:
+#  enable: true
+#  openapi:
+#    description: 用户项目接口文档描述
+#    title: 用户项目接口文档
+#    email: 13716759140@163.com
+#    concat: 阿满
+#    url: www.baidu.com
+#    version: v1.0.1
+#    group:
+#      default:
+#        group-name: default-group
+#        api-rule: package
+#        api-rule-resources:
+#          - org.example.user.controller
 
