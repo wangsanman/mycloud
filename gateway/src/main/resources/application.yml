@@ -4,34 +4,23 @@ spring:
   application:
     name: gatewayService
   cloud:
+    nacos:
+      server-addr: 123.56.223.66:8848
     gateway:
       routes:
-        - id: 用户服务 # 路由 ID
+        - id: user # 路由 ID
           #          uri: http://example.org  # 目标服务的 URI
-          uri: http://localhost:8886  #匹配请求路径后,访问该服务
+          uri: lb://user-service  #匹配请求路径后,访问该服务
           predicates:
             - Path=/userService/**  # 匹配请求路径
         #          filters:
         #            - StripPrefix=1  # 去掉请求路径中的第一个前缀
-        - id: 订单服务 # 路由 ID
+        - id: order # 路由 ID
           #          uri: http://example.org  # 目标服务的 URI
-          uri: lb://orderService
+          uri: lb://order-service
           predicates:
             - Path=/orderService/**  # 匹配请求路径
-      enabled: true
 logging:
   level:
     org.example.gateway: debug
 
-
-eureka:
-  instance:
-    hostname: localhost  # 主机名
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
-    leaseRenewalIntervalInSeconds: 30  # 续约间隔时间
-    leaseExpirationDurationInSeconds: 90  # 过期时间
-  client:
-    register-with-eureka: true  # false不注册自己
-    fetch-registry: false  # 不从 Eureka 获取服务列表
-    service-url:
-      defaultZone: http://localhost:8761/eureka/  # Eureka 服务器地址
