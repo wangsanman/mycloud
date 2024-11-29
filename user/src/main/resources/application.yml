@@ -81,3 +81,6 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - org.example.user.controller
+feign:
+  okhttp:
+    enabled: true

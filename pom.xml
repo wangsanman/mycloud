@@ -23,6 +23,7 @@
         <module>poi</module>
         <module>order</module>
         <module>rpc</module>
+        <module>common</module>
     </modules>
 
     <properties>

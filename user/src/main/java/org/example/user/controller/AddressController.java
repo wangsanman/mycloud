@@ -2,7 +2,7 @@ package org.example.user.controller;
 
 
 import io.swagger.annotations.ApiOperation;
-import org.example.user.config.IgnoreToken;
+import org.example.common.IgnoreToken;
 import org.example.user.entity.po.Address;
 import org.example.user.service.IAddressService;
 import org.springframework.web.bind.annotation.PostMapping;

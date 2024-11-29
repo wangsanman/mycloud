@@ -1,5 +1,6 @@
-package org.example.user.config;
+package org.example.common;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,9 +9,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
+@RequiredArgsConstructor
 public class ConfigRedis {
-    @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
+    private final RedisConnectionFactory redisConnectionFactory;
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
@@ -25,7 +26,7 @@ public class ConfigRedis {
         redisTemplate.setHashValueSerializer(new StringRedisSerializer());
 
         // 连接redis数据库
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
+//        redisTemplate.setConnectionFactory(redisConnectionFactory);
 
         return redisTemplate;
     }
