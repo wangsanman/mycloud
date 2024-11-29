@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.example.common.JwtUtil,\
+org.example.common.MybatisPlusConfig,\
+org.example.common.WebConfig

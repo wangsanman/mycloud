@@ -11,11 +11,8 @@ import org.example.order.entity.vo.OrderUserVo;
 import org.example.order.service.IOrderService;
 import org.example.rpc.client.UserApi;
 import org.example.rpc.dto.UserDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>

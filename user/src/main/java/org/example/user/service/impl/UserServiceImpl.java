@@ -3,11 +3,11 @@ package org.example.user.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
-import org.example.user.config.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.example.common.JwtUtil;
 import org.example.user.entity.dto.PageDto;
 import org.example.user.entity.dto.UserDto;
 import org.example.user.entity.dto.UserQuery;
@@ -25,16 +25,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private JwtUtil jwtUtil;
+
+    private final JwtUtil jwtUtil;
 
     @Override
     public void deductMoney(Long id, Integer money) {
         //查询用户
-        User user = userMapper.selectById(id);
+        User user = getById(id);
 
         //判断状态
         if (user == null || user.getStatus().equals(UserEnum.FREEZE)) {
@@ -50,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user = new User();
         user.setBalance(user.getBalance() - money);
         user.setId(id);
-        userMapper.updateById(user);
+        updateById(user);
     }
 
     @Override

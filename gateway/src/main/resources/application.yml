@@ -3,26 +3,36 @@ server:
 spring:
   application:
     name: gateway-service
+  main:
+    web-application-type: reactive
   cloud:
     nacos:
       server-addr: 123.56.223.66:8848
     gateway:
       routes:
-#        - id: user #用户服务 # 路由 ID
-#          #          uri: http://example.org  # 目标服务的 URI
-#          uri: lb://user-service  #匹配请求路径后,访问该服务
-#          predicates:
-#            - Path=/userService/**  # 匹配请求路径
+        - id: users #用户服务 # 路由 ID
+          #          uri: http://example.org  # 目标服务的 URI
+          uri: lb://user-service  #匹配请求路径后,访问该服务
+          predicates:
+            - Path=/userService/**  # 匹配请求路径
 #        #          filters:
 #        #            - StripPrefix=1  # 去掉请求路径中的第一个前缀
-        - id: order  #订单服务 # 路由 ID
+        - id: orders  #订单服务 # 路由 ID
           #          uri: http://example.org  # 目标服务的 URI
           uri: lb://order-service
           predicates:
             - Path=/orderService/**  # 匹配请求路径
+      default-filters: #默认过滤器,对上边路由都生效
+        - AddRequestHeader=auth, everybody all be rich
 logging:
   level:
     org.example.gateway: debug
+
+mycloud:
+  #网关鉴权白名单(支持模糊匹配:/**)
+  whiteList:
+    - /userService/users/login
+    - /products/** #商品接口都放行
 
 #knife4j:
 #  enable: true
@@ -39,4 +49,3 @@ logging:
 #        api-rule: package
 #        api-rule-resources:
 #          - org.example.user.controller
-

@@ -1,4 +1,4 @@
-package org.example.user.config;
+package org.example.common;
 
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;

@@ -1,4 +1,4 @@
-package org.example.user.config;
+package org.example.common;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -12,9 +12,8 @@ public class JwtUtil {
     // 秘钥
     private static final String SECRET_KEY = "850966wym";
     private static final Algorithm ALGORITHM = Algorithm.HMAC256(SECRET_KEY);
-
     // 生成 JWT 的有效时间（例如 1 小时）
-    private static final long EXPIRATION_TIME = 3600 * 1000;
+    private static final long EXPIRATION_TIME = 3600 * 1000 * 24;
 
     /**
      * 生成 JWT Token
@@ -29,6 +28,8 @@ public class JwtUtil {
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(ALGORITHM);
+
+
     }
 
     /**
@@ -49,7 +50,7 @@ public class JwtUtil {
      * @param token JWT 字符串
      * @return 用户 ID
      */
-    public String getUserId(String token) {
+    public String parseToken(String token) {
         DecodedJWT decodedJWT = verifyToken(token);
         return decodedJWT.getClaim("userId").asString();
     }
