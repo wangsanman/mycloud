@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserDto implements Cloneable{
     @ApiModelProperty("主键id")
     private Long id;
 
@@ -26,4 +26,13 @@ public class UserDto {
     @ApiModelProperty("密码")
     private Integer password;
 
+    @Override
+    public UserDto clone() {
+        try {
+            UserDto clone = (UserDto) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

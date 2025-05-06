@@ -1,0 +1,10 @@
+mycloud:
+  swagger:
+    title: 用户项目接口文档标题
+    description: 用户项目接口文档描述
+  db:
+    host: 123.56.223.66
+    database: mycloud
+    pwd: 123
+  sentinel:
+    host: localhost

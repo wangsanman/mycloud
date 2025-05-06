@@ -1,0 +1,42 @@
+server:
+  port: 8084
+
+  servlet:
+    context-path: /userService
+
+  tomcat:
+    threads:
+      max: 10
+    accept-count: 10
+    max-connections: 50
+
+feign:
+  okhttp:
+    enabled: true #开启http连接池
+  sentinel:
+    enabled: true
+
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: ${mycloud.sentinel.host}:8858  #注册到sentinel
+      http-method-specify: true  #是否当请求方式作为路径名称
+  rabbitmq:
+    host: 123.56.223.66
+    port: 5672
+    virtual-host: mycloudhost
+    username: mycloud
+    password: 123
+    connection-timeout: 1s #设置MQ超时连接时间
+    template:
+      retry:
+        enabled: true #开启超时重试机制
+        initial-interval: 1000 #第一次重试和第二次重试间隔时间
+        #失败后下次的等待时常倍数, 下次等待时长 time = initial-interval * multiplier
+        #(我测试时,time最大为10)
+        #第二次和第三次间隔时间为 initial-interval *2  第三次和第四次间隔时间为 initial-interval *2*2
+        multiplier: 2
+        max-attempts: 4  #最大重试次数
+    publisher-confirm-type: correlated  #开启publisher confirm机制, 并设置confirm类型
+    publisher-returns: true  #开启publisher return机制

@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      server-addr: 123.56.223.66:8848
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: shared-log.yaml
+          - data-id: shared-jdbc.yaml
+          - data-id: shared-swagger.yaml
+
+

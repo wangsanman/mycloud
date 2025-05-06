@@ -12,23 +12,10 @@ spring:
   cloud:
     nacos:
       server-addr: 123.56.223.66:8848
-  #  cloud:
-  ##    discovery:
-  ##      client:
-  ##        simple:
-  ##          instances:
-  ##            orderSERVICE:
-  ##              uri: http://localhost:8886
-  #
-  #
-  #    config:
-  #      label: master
-  # 修改swagger的路径匹配配置，使其兼容新版的SpringBoot
-
-  #  mvc:
-  #    pathmatch:
-  #      matching-strategy: ant_path_matcher
-
+    sentinel:
+      http-method-specify: true
+      transport:
+        dashboard: localhost:8858
 
   servlet:
     multipart:
@@ -41,16 +28,10 @@ spring:
     username: root
     password: ${mycloud.db.pwd}
   redis:
-    host: 123.56.223.66
+    host: 123.56.223.62
     port: 6379
     password: 123456abc
 
-#  config:
-#    import: "optional:configserver:http://localhost:8082"
-
-#mybatis:
-#  mapper-locations: classpath*:mapper/*.xml
-#  type-aliases-package: org.example.order.entity.po.Order
 
 mybatis-plus:
   type-aliases-package: org.example.order.entity.po
@@ -92,9 +73,12 @@ knife4j:
         group-name: default-group
         api-rule: package
         api-rule-resources:
+          - org.example.user.controller
           - org.example.order.controller
 
-#开启连接池
 feign:
   okhttp:
-    enabled: true
+    enabled: true #开启http连接池
+  sentinel:
+    enabled: true #将feign接口提交给sentinel
+

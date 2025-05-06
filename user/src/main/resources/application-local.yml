@@ -1,26 +1,15 @@
 mycloud:
+  swagger:
+    title: 用户项目接口文档标题
+    description: 用户项目接口文档描述
   db:
     host: 123.56.223.66
-    pwd: 123
-  eureka:
+    database: mycloud
+    pwd: W@81888188@ym
+  sentinel:
     host: localhost
-    port: 8761
-
-eureka:
-  instance:
-    #    hostname: localhost  # 主机名
-    #    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
-    leaseRenewalIntervalInSeconds: 30  # 续约间隔时间
-    leaseExpirationDurationInSeconds: 90  # 过期时间
-  client:
-    service-url:
-      defaultZone: http://${mycloud.eureka.host}:${mycloud.eureka.port}/eureka/  # Eureka 服务器地址
-    enabled: false  #是否开启
-
-logging:
-  level:
-    org.example: DEBUG  # 设置指定包的日志级别为 DEBUG
-  pattern:
-    dateformat: yyyy-MM-dd HH:mm:ss:SSS
-  file:
-    name: logs/${spring.application.name}.log
+spring:
+  cloud:
+    nacos:
+      config:
+        enabled: false

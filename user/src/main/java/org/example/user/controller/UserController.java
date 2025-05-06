@@ -1,21 +1,29 @@
 package org.example.user.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.common.CommonResult;
 import org.example.common.IgnoreToken;
+import org.example.common.RedisConstants;
 import org.example.user.entity.dto.PageDto;
 import org.example.user.entity.dto.UserDto;
 import org.example.user.entity.dto.UserQuery;
 import org.example.user.entity.po.User;
 import org.example.user.entity.vo.UserVo;
 import org.example.user.service.UserService;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RequestMapping("/users")
 @RestController
@@ -27,8 +35,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDto userDto) {
-        return userService.login(userDto);
+    public CommonResult login(@RequestBody UserDto userDto) throws InterruptedException {
+        String login = userService.login(userDto);
+        return CommonResult.success(login);
     }
 
     @PostMapping
@@ -36,6 +45,9 @@ public class UserController {
     @IgnoreToken
     public boolean add(@RequestBody UserDto userDto) {
         User user = BeanUtil.copyProperties(userDto, User.class);
+        int a = 0;
+        int c = 2/a;
+        System.out.println(c);
         return userService.save(user);
     }
 
@@ -57,9 +69,10 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation("根据id查询用户")
     @IgnoreToken
-    public UserVo selectById(@ApiParam(value = "用户id") @PathVariable Long id) {
-        User user = userService.getById(id);
-        return BeanUtil.copyProperties(user, UserVo.class);
+    public CommonResult selectById(@ApiParam(value = "用户id") @PathVariable Long id) {
+        ThreadUtil.sleep(10000);
+        UserVo user = userService.selectById(id);
+        return CommonResult.success(user);
     }
 
     @GetMapping("/ids/{ids}")

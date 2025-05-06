@@ -35,8 +35,11 @@ public class OrderController {
     public OrderUserVo getOrderAndUser(@ApiParam("订单id") @PathVariable Integer id){
         Order order = orderService.getById(id);
         UserDto userDto = userApi.get(order.getUserId());
-
         OrderUserVo orderUserVo = BeanUtil.copyProperties(order, OrderUserVo.class);
+        if (userDto == null){
+            return orderUserVo;
+        }
+
         BeanUtil.copyProperties(userDto,orderUserVo,"id","status");
         orderUserVo.setUserStatus(userDto.getStatus());
 

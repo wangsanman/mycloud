@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import org.example.user.entity.dto.UserInfo;
 import org.example.user.entity.enums.UserEnum;
@@ -48,4 +49,13 @@ public class User {
     @ApiModelProperty("修改时间")
     private LocalDateTime updateTime;
 
+
+    public User() {
+    }
+
+    public User(Long id, String name, Integer age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
 }

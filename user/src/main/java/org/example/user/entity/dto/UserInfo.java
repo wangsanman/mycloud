@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @ApiModel("用户详细信息")
 public class UserInfo {
-    @ApiModelProperty("年龄")
-    private Integer age;
-    @ApiModelProperty("介绍")
-    private String intro;
-    @ApiModelProperty("性别")
-    private String gender;
+    @ApiModelProperty("地址")
+    private String address;
+    @ApiModelProperty("兴趣")
+    private String[] hobbies;
 }

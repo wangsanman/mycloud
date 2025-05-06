@@ -1,86 +1,49 @@
 server:
-  port: 8081
-  #  port: 8443
-  #  ssl:
-  #    key-store: classpath:keystore.p12
-  #    key-store-password: 123456
-  #    key-store-type: PKCS12
-  #    key-alias: myalias
+  port: 8088
   servlet:
-    session:
-      timeout: 2s
     context-path: /userService
-spring:
-  application:
-    name: user-service
-  profiles:
-    active: local
-  cloud:
-    nacos:
-      server-addr: 123.56.223.66:8848
+  tomcat:
+    threads:
+      max: 1
 
-  servlet:
-    multipart:
-      max-file-size: 10MB
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    #rewriteBatchedStatements=true 对大批量操作优化,会把多条sql合并为一条
-    url: jdbc:mysql://${mycloud.db.host}:3306/mycloud?useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
-    username: root
-    password: ${mycloud.db.pwd}
-  redis:
-    host: 123.56.223.66
-    port: 6379
-    password: 123456abc
-
-#  config:
-#    import: "optional:configserver:http://localhost:8082"
-
-#mybatis:
-#  mapper-locations: classpath*:mapper/*.xml
-#  type-aliases-package: org.example.user.entity.po.User
-
-mybatis-plus:
-  type-aliases-package: org.example.user.entity.po
-  global-config:
-    db-config:
-      id-type: auto
-      logic-delete-field: deleted
-      logic-delete-value: 1
-      logic-not-delete-value: 0
-      update-strategy: not_empty
-  configuration:
-    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
-
-eureka:
-  instance:
-    #    hostname: localhost  # 主机名
-    #    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
-    leaseRenewalIntervalInSeconds: 30  # 续约间隔时间
-    leaseExpirationDurationInSeconds: 90  # 过期时间
-  client:
-    register-with-eureka: true  # false不注册自己
-    fetch-registry: true  # false不从Eureka 获取服务列表
-    service-url:
-      defaultZone: http://${mycloud.eureka.host}:${mycloud.eureka.port}/eureka/  # Eureka 服务器地址
-    enabled: false
-
-knife4j:
-  enable: true
-  openapi:
-    description: 用户项目接口文档描述
-    title: 用户项目接口文档
-    email: 13716759140@163.com
-    concat: 阿满
-    url: www.baidu.com
-    version: v1.0.1
-    group:
-      default:
-        group-name: default-group
-        api-rule: package
-        api-rule-resources:
-          - org.example.user.controller
 feign:
   okhttp:
+    enabled: true #开启http连接池
+  sentinel:
     enabled: true
+
+spring:
+#  redis:
+#    host: 123.56.223.61
+#    port: 6379
+#    username: default
+#    password: 850966wym
+#    lettuce:
+#      pool:
+#        max-active: 8 #最大连接数
+#        max-idle: 8  #最大空闲连接
+#        min-idle: 0  #最小空闲连接
+#        max-wait: 100ms  #连接等待时间
+  cloud:
+    sentinel:
+      transport:
+        dashboard: ${mycloud.sentinel.host}:8858  #注册到sentinel
+      http-method-specify: true  #是否当请求方式作为路径名称
+  rabbitmq:
+    host: 123.56.223.66
+    port: 5672
+    virtual-host: mycloudhost
+    username: mycloud
+    password: 123
+    connection-timeout: 1s #设置MQ超时连接时间
+    template:
+      retry:
+        enabled: true #开启超时重试机制
+        initial-interval: 1000 #第一次重试和第二次重试间隔时间
+        #失败后下次的等待时常倍数, 下次等待时长 time = initial-interval * multiplier
+        #(我测试时,time最大为10)
+        #第二次和第三次间隔时间为 initial-interval *2  第三次和第四次间隔时间为 initial-interval *2*2
+        multiplier: 2
+        max-attempts: 4  #最大重试次数
+    publisher-confirm-type: correlated  #开启publisher confirm机制, 并设置confirm类型
+    publisher-returns: true  #开启publisher return机制

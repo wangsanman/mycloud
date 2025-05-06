@@ -4,6 +4,8 @@ import feign.Logger;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.example.common.UserContext;
+import org.example.rpc.client.fallback.UserApiFallbackFactory;
+import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.context.annotation.Bean;
 
 public class DefaultFeignConfig {
@@ -22,5 +24,10 @@ public class DefaultFeignConfig {
                 }
             }
         };
+    }
+
+    @Bean
+    public UserApiFallbackFactory fallbackFactory() {
+        return new UserApiFallbackFactory();
     }
 }

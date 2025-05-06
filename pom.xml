@@ -24,6 +24,9 @@
         <module>order</module>
         <module>rpc</module>
         <module>common</module>
+        <module>message</module>
+        <module>message-two</module>
+        <module>items</module>
     </modules>
 
     <properties>
@@ -39,8 +42,9 @@
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
         <springfox.swagger-ui.version>2.9.2</springfox.swagger-ui.version>
         <knife4j-openapi2-spring-boot-starter.version>3.0.3</knife4j-openapi2-spring-boot-starter.version>
+        <elasticsearch.version>7.12.1</elasticsearch.version>
+        <redisson.version>3.33.0</redisson.version>
     </properties>
-
 
     <dependencies>
         <dependency>
@@ -59,6 +63,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
@@ -118,6 +127,12 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,4 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.example.common.JwtUtil,\
 org.example.common.MybatisPlusConfig,\
-org.example.common.WebConfig
+org.example.common.WebConfig,\
+org.example.common.RedisApi,\
+org.example.common.RedisIdWorker

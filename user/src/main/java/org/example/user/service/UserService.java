@@ -22,5 +22,7 @@ public interface UserService extends IService<User> {
 
     PageDto<UserVo> queryUsersByPage(UserQuery userQuery);
 
-    String login(UserDto userDto);
+    String login(UserDto userDto) throws InterruptedException;
+
+    UserVo selectById(Long id);
 }
